@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+    <meta name=“format-detection” content="telephone=no,email=no,date=no,address=no" />
+    <meta name="referrer" content="never">
+
+    <link rel="icon" href="<%= BASE_URL %>aimumisi.png" />
+
+	<link href="./js/dist/neplayer.min.css" rel="stylesheet">
+
+
+
+    <title>商城</title>
+    <style>
+      /* .load{
+        width:0.6rem;
+        height:0.6rem;
+        background-image:url("images/load.gif");
+		background-size:100%;
+        position: fixed;
+        z-index:10000;
+        left:50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+        display:none;
+      } */
+
+		[v-cloak] {
+		    display: none !important;
+		}
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <strong></strong>
+    </noscript>
+    <div id="app" v-cloak></div>
+    <div class="load"></div>
+
+    <script src="./js/dist/neplayer.min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=9QnqhIcNUOZOg0kyDocfiL4L3KMBS4md"></script>
+
+	<script src="<%= BASE_URL %>js/flexible.js"></script>
+	<script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+
+  </body>
+
+
+</html>
