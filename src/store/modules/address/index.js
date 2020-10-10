@@ -1,14 +1,15 @@
-import {
-    addAddressData,
-    delAddressData,
-    getAddresData,
-    getAddressInfoData,
-    getAllProvince,
-    getCityByProvinceID,
-    getDefaultAddressData,
-    modAddressData,
-} from "../../../api/address";
+import Vue from 'vue';
+import {getAddresData,
+delAddressData,
+addAddressData,
+getAddressInfoData,
+modAddressData,
+getDefaultAddressData,
 
+getAllProvince,//省份
+getCityByProvinceID,//市
+getDistrictsByCityID,//县
+} from "../../../api/address";
 export default {
     namespaced:true,
     state:{
@@ -19,7 +20,7 @@ export default {
 		CityID:4458,//市ID
 		DistrictsByCity:[],//县
 		lastModifierID:0
-
+		
     },
     mutations:{
         ["SET_ADDRESS"](state,payload){
@@ -54,7 +55,7 @@ export default {
 				    payload.success(res);
 				}
 			})
-
+		
 		},
 		//县
 		// getCity(conText,payload){
@@ -63,10 +64,10 @@ export default {
 		// 		    payload.success(res);
 		// 		}
 		// 	})
-
+		
 		// },
-
-
+		
+		
         //获取收货地址
         getAddress(conText,payload){
             getAddresData(conText.rootState.user.uid).then(res=>{

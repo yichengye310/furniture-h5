@@ -17,14 +17,10 @@
         :class="{tags:true, active:status==='2'?true:false}"
         @click="$router.replace('/user/order?status=2')"
       >待收货</div>
-      <!-- <div
-        :class="{tags:true, active:status==='3'?true:false}"
-        @click="$router.replace('/user/order?status=3')"
-      >待评价</div> -->
       <div
         :class="{tags:true, active:status==='3'?true:false}"
         @click="$router.replace('/user/order?status=3')"
-      >已完成</div>
+      >待评价</div>
       <div
         :class="{tags:true, active:status==='4'?true:false}"
         @click="$router.replace('/user/order?status=4')"

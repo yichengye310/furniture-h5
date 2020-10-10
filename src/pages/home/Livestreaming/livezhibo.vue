@@ -195,7 +195,7 @@
             </div>
         </transition>
         <transition name="van-slide-up" style="position: absolute;top: 0;z-index: 999999 !important;">
-            <div style="width: 100%;height: 4.6rem; position: fixed; bottom: 0; z-index: 2;" v-show="show2">
+            <div style="width: 100%;height: 4rem; position: fixed; bottom: 0; z-index: 2;" v-show="show2">
                 <div class="swpier-wrap swiper-container" ref="swiper3" style="background-color: #FFFFFF;">
                     <div class="swiper-wrapper">
                         <div :key="index4" class="swiper-slide" v-for="(item,index4) in coupons">
@@ -238,14 +238,11 @@
                                                     {{item.couponName}}
                                                 </div>
                                             </div>
-                                            <div class="nouse-main1-t1">全场满{{item.discountLimit * .01}}可用</div>
-                                            <div class="nouse-main1-t2">有效期{{dateFormat(new
-                                                Date(item.couponBeginTime))}}至{{dateFormat(new Date(item.couponEndTime))
-                                                }}
-                                            </div>
+                                            <div class="nouse-main1-t1">全场满{{item.discountLimit}}可用</div>
+                                            <div class="nouse-main1-t2">有效期{{dateFormat(new Date(item.couponBeginTime))}}至{{dateFormat(new Date(item.couponEndTime)) }}</div>
                                         </div>
                                         <div class="nouse-main2">
-                                            <div>{{item.couponAmount * .01}}</div>
+                                            <div>{{item.couponAmount}}</div>
                                             <div>元</div>
                                         </div>
                                     </div>
@@ -415,10 +412,8 @@
         methods: {
             ...mapMutations({
                 DELETE_TIME_SHOP: "live/DELETE_TIME_SHOP",
-                DELETE_SHOP: "live/DELETE_SHOP",
+                DELETE_SHOP: "live/DELETE_SHOP"
                 // getPushMsg:"live/getPushMsg"
-                "SET_LIVE_SHOP": "live/SET_LIVE_SHOP",
-                "SET_TIME_SHOP": "live/SET_TIME_SHOP"
             }),
             ...mapActions({
                 getlivetomessage: "live/getlivetomessage",
@@ -443,7 +438,7 @@
                     console.log("res: " + JSON.stringify(res));
                     this.swiperto2();
                 }).catch(err => {
-                    console.log("err: " + err);
+                    console.log("err: "+ err);
                 });
                 // getMessage(this.roomName, this.userName, "主播发优惠券啦", 7, 5, couponID);
             },
@@ -453,7 +448,7 @@
                 getMessage(this.roomName, this.userName, "主播发优惠券啦", 7, 5, null, null, couponID);
             },
 
-            dateFormat(time) {
+            dateFormat(time){
                 return `${time.getFullYear()}-${time.getMonth() + 1 >= 10 ? (time.getMonth() + 1) : '0' + (time.getMonth() + 1)}-${time.getDate() >= 10 ? time.getDate() : '0' + time.getDate()}`;
             },
             // 'ws://36.154.123.82:8081/websocket/chat/' +this.$route.query.liveTitle+'/'+localStorage['phoneNumber'];
@@ -755,9 +750,7 @@
                 this.msgList = JSON.parse(e.data);
                 //接收数据，同时判断数据的类型
                 //当为消息类型的数据的时候，显示消息
-                if (this.msgList.pushType === 8) {
-                    //this.msgList.msg = this.userName.replace(/(\d{3})\d{4}(\d{4})/g, "$1****$2") +"   点了赞";
-                } else if (this.msgList.pushType == 4) {
+                if (this.msgList.pushType == 4) {
                     this.number = this.msgList.onlineNum;
                     localStorage.setItem("onlineNum", this.msgList.onlineNum);
                 } else {
@@ -980,10 +973,8 @@
                         while (!this.stopped) {
                             this.pusher && this.pusher.stop();
                             await new Promise(r => setTimeout(r, 500));
-                            console.log("this.stopped: " + this.stopped);
+                            console.log("this.stopped: " + this.stopped)
                         }
-                        this.SET_LIVE_SHOP({livetheshop: []});
-                        this.SET_TIME_SHOP({timeshop1:[]});
                         localStorage.removeItem("pushUrl");
                         this.$router.replace('/live');
                         localStorage["flage"] = 0;
@@ -1016,8 +1007,6 @@
             while (!that.stopped) {
                 await new Promise(r => setTimeout(r, 500));
             }
-            this.SET_LIVE_SHOP({livetheshop: []});
-            this.SET_TIME_SHOP({timeshop1:[]});
             getMessage(this.roomName, this.userName, "直播结束啦", 6, 5);
             next();
             // });
@@ -1030,7 +1019,7 @@
 
     .swpier-wrap {
         width: 100%;
-        height: 3.5rem;
+        height: 3.1rem;
 
         position: relative;
     }

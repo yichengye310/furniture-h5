@@ -167,13 +167,8 @@
 
         methods: {
             choosetheputong() {
-                if (this.livetitle === '') {
-                    Toast('请输入直播间名称')
-                    // plus.nativeUI.toast('请输入直播间名称')
-                } else {
-                    this.$router.push('/livechooseshoptime?livetitle=' + this.livetitle)
-                    localStorage['livetitle'] = this.livetitle
-                }
+                this.$router.push('/livechooseshoptime?livetitle=' + this.livetitle)
+                localStorage['livetitle'] = this.livetitle
             },
             tochoose() {
                 console.log(this.livetitle === '');
@@ -311,10 +306,6 @@
                             console.log("zhibbo.vue - create: " + res.data.data.success.pushUrl + " " + res.data.data.success.cid);
                             localStorage['flage'] = 1;
                             // this.resetSetItem('flage', 1);
-                            localStorage.removeItem("livetitle");
-                            // this.SET_LIVE_SHOP({livetheshop: []});
-                            // this.SET_TIME_SHOP({timeshop1:[]});
-
                             this.$router.push({
                                 path: "/livezhibo",
                                 query: {liveTitle: this.livetitle}

@@ -159,12 +159,6 @@
 			padding: 0.14rem;color: #B5B5B5;"
                     v-for="(item3,index) in details.productStandards"
             >{{item3.standard}}</span>
-                        <span
-                                style="
-			border-radius:2px;
-			height: auto;
-			padding: 0.14rem;color: #B5B5B5;"
-                        >定制</span>
                     </div>
                 </li>
 
@@ -1133,7 +1127,7 @@
         width: 90%;
         font-size: 0.28rem;
         margin: 0 auto;
-        height: 0.8rem;
+        height: 0.6rem;
         align-items: center;
         display: flex;
         justify-content: space-between;
@@ -1649,8 +1643,6 @@
 
     .content >>> img {
         width: 100%;
-        object-fit: contain;
-        height: auto;
     }
 
     .contenthtml {

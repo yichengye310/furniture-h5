@@ -6,7 +6,7 @@
         </div>
         <div class="join" v-if="!isVIP">
             <img alt class="huiyuan" src="../../../assets/images/vip/huiyuan.png"/>
-            <img @click="show = true"
+            <img @click="pay"
                  alt
                  class="btn-join"
                  src="../../../assets/images/vip/btn_join.png"
@@ -109,7 +109,6 @@
                 </div>
             </div>
         </van-overlay>
-        <van-action-sheet v-model="show" :actions="actions" @select="onSelect" />
     </div>
 </template>
 
@@ -118,13 +117,12 @@
     import axios from 'axios';
     import {mapActions, mapState} from "vuex";
     import Vue from "vue";
-    import {Dialog, Overlay, PullRefresh, Toast, ActionSheet} from "vant";
+    import {Dialog, Overlay, PullRefresh, Toast} from "vant";
 
     Vue.use(PullRefresh);
     Vue.use(Overlay);
     Vue.use(Dialog);
     Vue.use(Toast);
-    Vue.use(ActionSheet);
 
     export default {
         name: "VIP_center",
@@ -135,14 +133,7 @@
                 productsNav: 0,
                 joinVIPSuccess: false,
                 pullUp: null,
-                status: "",
-                channels: [],
-                isactive: 1,
-                show: false,
-                actions: [
-                    { name: '支付宝支付' },
-                    { name: '微信支付' },
-                ],
+                status: ""
             }
         },
         created() {
@@ -152,15 +143,6 @@
             this.pullUp = new UpRefresh();
             this.getVipProducts();
             this.getVipProducts99();
-        },
-        mounted() {
-            this.$nextTick(() => {
-                if (window.plus) {
-                    this.plusReady();
-                } else {
-                    document.addEventListener('plusready', this.plusReady, false);
-                }
-            })
         },
         computed: {
             ...mapState({
@@ -180,33 +162,7 @@
                 getVipProds99Page: "goods/getVipProds99Page"
             }),
 
-            plusReady() {
-                console.log("plus ready");
-                plus.payment.getChannels((channels) => {
-                    console.log(JSON.stringify(channels));
-                    this.channels = channels;
-                }, function (e) {
-                    alert("获取支付通道失败：" + e.message);
-                });
-            },
-
-            onSelect(item) {
-                this.show = false;
-                if (item.name === '支付宝支付'){
-                    this.isactive = 1;
-                } else if (item.name === '微信支付') {
-                    this.isactive = 2;
-                }
-
-                this.pay();
-            },
-
             pay() {
-                const WXPAYSERVER = this.$config.baseApi + "/wxPay/pay";
-                const ALIPAYSERVER = this.$config.baseApi + "/zfbPay/toPayApp";
-                const aliChannel = this.channels.filter((item) => {return item.id === 'alipay'})[0];
-                const wxChannel = this.channels.filter((item) => {return item.id === 'wxpay'})[0];
-
                 if (this.userType == '3' || this.userType == '4') {
                     Dialog.alert({message: "经销商或商家不可以开通会员"});
                     return;
@@ -215,117 +171,78 @@
                     spbillCreateIp: returnCitySN["cip"],
                     type: 2,
                     userID: localStorage["uid"],
-                    totalAmount: 1
+                    totalAmount: 100
                 };
+                // console.log(returnCitySN["cip"])
 
-                let that = this;
                 axios({
                     method: "post",
-                    url: this.isactive === 1? ALIPAYSERVER: WXPAYSERVER,
+                    url: this.$config.baseApi + "/wxPay/H5pay",
                     headers: {
                         "Content-Type": "application/json;"
                     },
                     data: JSON.stringify(orderIDList)
-                }).then((res) => {
-                    console.log(JSON.stringify(res));
-                    plus.payment.request(this.isactive === 1? aliChannel: wxChannel, res.data.data, function (result) {
-                        // console.log(JSON.stringify(result));
-                        plus.nativeUI.alert("支付成功！", function () {
-                            localStorage.setItem("userType", "2");
-                            that.joinVIPSuccess = true;
-                            // axios({
-                            //     method: "get",
-                            //     url: this.$config.baseApi + "/user/updateUserType",
-                            //     params: {
-                            //         userID: localStorage.getItem('uid'),
-                            //         userType: 2
-                            //     }
-                            // }).then((res) => {
-                            //     if (res.status === 0) {
-                            //         plus.nativeUI.alert("恭喜您已成为会员，请重新登录生效。");
-                            //     } else {
-                            //         plus.nativeUI.alert(res.message);
-                            //     }
-                            // }).catch((err) => {
-                            //     plus.nativeUI.alert("修改用户状态失败，请联系客服!");
-                            // })
-                        });
-                    }, function (error) {
-                        console.log(JSON.stringify(error));
-                        plus.nativeUI.alert("支付失败！");
+                }).then(res => {
+                    plus.webview.create(res.data.data.mweb_url, "支付", {
+                        additionalHttpHeaders: {Referer: "http://www.ammsshop.com"}
                     });
-                });
-                // console.log(returnCitySN["cip"])
-
-                // axios({
-                //     method: "post",
-                //     url: this.$config.baseApi + "/wxPay/pay",
-                //     headers: {
-                //         "Content-Type": "application/json;"
-                //     },
-                //     data: JSON.stringify(orderIDList)
-                // }).then(res => {
-
-                    // plus.webview.create(res.data.data.mweb_url, "支付", {
-                    //     additionalHttpHeaders: {Referer: "http://www.ammsshop.com"}
-                    // });
-                    // console.log(JSON.stringify(res));
-                    // window.setTimeout(() => {
-                    //     Dialog.confirm({
-                    //         message: "是否完成支付?",
-                    //         confirmButtonColor: "#000000",
-                    //         confirmButtonText: "已完成支付",
-                    //         cancelButtonText: "支付遇到问题",
-                    //         cancelButtonColor: "#AAAAAA"
-                    //     }).then(() => {
-                    //         // console.log(this.$route.query.out_trade_no);
-                    //         axios({
-                    //             method: "post",
-                    //             url: this.$config.baseApi + "/wxPay/orderQuery",
-                    //             headers: {
-                    //                 "Content-Type": "application/json;"
-                    //             },
-                    //             params: {
-                    //                 outTradeNo: res.data.data.out_trade_no
-                    //             }
-                    //         }).then(res => {
-                    //             console.log(JSON.stringify(res));
-                    //             this.totalAmount = res.data.data.total_fee;
-                    //             if (res.data.data.trade_state === "SUCCESS") {
-                    //                 this.status = "支付成功";
-                    //                 this.joinVIPSuccess = true;
-                    //                 console.log("SUCCESS");
-                    //             } else {
-                    //                 this.status = "支付失败";
-                    //                 console.log("FAIL");
-                    //             }
-                    //         });
-                    //     }).catch(() => {
-                    //         console.log(this.$route.query.out_trade_no);
-                    //         axios({
-                    //             method: "post",
-                    //             url: this.$config.baseApi + "/wxPay/orderQuery",
-                    //             headers: {
-                    //                 "Content-Type": "application/json;"
-                    //             },
-                    //             params: {
-                    //                 outTradeNo: res.data.data.out_trade_no
-                    //             }
-                    //         }).then(res => {
-                    //             console.log(JSON.stringify(res));
-                    //             console.log(res.data.data.trade_state);
-                    //             this.totalAmount = res.data.data.total_fee;
-                    //             if (res.data.data.trade_state === "SUCCESS") {
-                    //                 this.status = "支付成功";
-                    //                 this.joinVIPSuccess = true;
-                    //                 console.log("SUCCESS");
-                    //             } else {
-                    //                 this.status = "支付失败";
-                    //                 console.log("FAIL");
-                    //             }
-                    //         });
-                    //     });
-                    // }, 0);
+                    console.log(JSON.stringify(res));
+                    window.setTimeout(() => {
+                        Dialog.confirm({
+                            message: "是否完成支付?",
+                            confirmButtonColor: "#000000",
+                            confirmButtonText: "已完成支付",
+                            cancelButtonText: "支付遇到问题",
+                            cancelButtonColor: "#AAAAAA"
+                        }).then(() => {
+                            // console.log(this.$route.query.out_trade_no);
+                            axios({
+                                method: "post",
+                                url: this.$config.baseApi + "/wxPay/orderQuery",
+                                headers: {
+                                    "Content-Type": "application/json;"
+                                },
+                                params: {
+                                    outTradeNo: res.data.data.out_trade_no
+                                }
+                            }).then(res => {
+                                console.log(JSON.stringify(res));
+                                this.totalAmount = res.data.data.total_fee;
+                                if (res.data.data.trade_state === "SUCCESS") {
+                                    this.status = "支付成功";
+                                    this.joinVIPSuccess = true;
+                                    console.log("SUCCESS");
+                                } else {
+                                    this.status = "支付失败";
+                                    console.log("FAIL");
+                                }
+                            });
+                        }).catch(() => {
+                            console.log(this.$route.query.out_trade_no);
+                            axios({
+                                method: "post",
+                                url: this.$config.baseApi + "/wxPay/orderQuery",
+                                headers: {
+                                    "Content-Type": "application/json;"
+                                },
+                                params: {
+                                    outTradeNo: res.data.data.out_trade_no
+                                }
+                            }).then(res => {
+                                console.log(JSON.stringify(res));
+                                console.log(res.data.data.trade_state);
+                                this.totalAmount = res.data.data.total_fee;
+                                if (res.data.data.trade_state === "SUCCESS") {
+                                    this.status = "支付成功";
+                                    this.joinVIPSuccess = true;
+                                    console.log("SUCCESS");
+                                } else {
+                                    this.status = "支付失败";
+                                    console.log("FAIL");
+                                }
+                            });
+                        });
+                    }, 0);
 
                     // if (res.err_msg === "get_brand_wcpay_request:ok") {
                     //     console.log("pay支付成功");
@@ -351,7 +268,7 @@
                     // var vm = this;
                     // vm.$router.go(-1);
                     // }
-                // });
+                });
             },
 
             getVipProducts() {

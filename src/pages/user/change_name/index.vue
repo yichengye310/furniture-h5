@@ -4,7 +4,7 @@
         <div class="main">
             <div class="cellphone-wrap">
                 <div class="cellphone tubiaoz">
-                    <input placeholder="请输入昵称" type="tel" v-model="nickname" max="12" maxlength="12"/>
+                    <input placeholder="请输入昵称" type="text" maxlength="12" v-model="nickname"/>
                 </div>
             </div>
 

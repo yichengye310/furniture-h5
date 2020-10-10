@@ -10,18 +10,18 @@
             </div>
 
             <div class="choose">选择支付方式</div>
-            <div @click="Alipaypayment()" class="payment-weixin pay">
+            <!--        <div class="payment-weixin pay" @click="Alipaypayment()">
                 <div class="radio">
-                    <div :class="{active:isactive===1}" class="radio-n"></div>
+                    <div class="radio-n" :class="{active:isactive===1}"></div>
                 </div>
 
                 <div class="pay-w pay1">
-                    <div class="pay-icon">
-                        <img alt="" src="../../../assets/images/user/orders/zhifubao.png">
-                    </div>
-                    <div>支付宝支付</div>
+                  <div class="pay-icon">
+                    <img src="../../../assets/images/user/orders/zhifubao.png" alt="">
+                  </div>
+                  <div>支付宝支付</div>
                 </div>
-            </div>
+            </div>-->
             {{opya}}
             <div @click="WeChatpayment()" class="payment-zhifubao pay">
                 <div class="radio">
@@ -58,7 +58,7 @@
         data() {
             return {
                 opya: "",
-                isactive: 1,
+                isactive: 2,
                 productID: "",
                 standardID: "",
                 colourID: "",
@@ -71,8 +71,7 @@
                 ordertheid: [],
                 roomName: localStorage.getItem("roomName"),
                 userName: localStorage.getItem("phoneNumber"),
-                userType: localStorage.getItem("userType2"),
-                channels: "",
+                userType: localStorage.getItem("userType2")
             };
         },
         computed: {
@@ -87,11 +86,11 @@
             this.$nextTick(() => {
                 //页面刚进入时开启长连接
                 this.initWebSocket();
-
             });
 
             if (this.$route.query.list === "jojo") {
                 this.orderprice = this.price;
+                let index = 0;
                 this.$set(this.orderprice, "0", this.orderprice);
             }
             if (this.$route.query.cartdata === "1") {
@@ -101,13 +100,6 @@
             }
         },
         mounted() {
-            this.$nextTick(() => {
-                if (window.plus) {
-                    this.plusReady();
-                } else {
-                    document.addEventListener('plusready', this.plusReady, false);
-                }
-            })
         },
         beforeCreate() {
             document.addEventListener("plusready", function () {
@@ -115,15 +107,6 @@
         },
 
         methods: {
-            plusReady() {
-                console.log("plus ready");
-                plus.payment.getChannels((channels) => {
-                    console.log(JSON.stringify(channels));
-                    this.channels = channels;
-                }, function (e) {
-                    alert("获取支付通道失败：" + e.message);
-                });
-            },
             gouwuchetijiao() {
                 let bodygoumai = [];
                 let v = [];
@@ -182,19 +165,13 @@
                 this.istabfixed = -position.y > this.tabberoffsettop;
             },
             sub() {
-                const WXPAYSERVER = this.$config.baseApi + "/wxPay/pay";
-                const ALIPAYSERVER = this.$config.baseApi + "/zfbPay/toPayApp";
-                const aliChannel = this.channels.filter((item) => {return item.id === 'alipay'})[0];
-                const wxChannel = this.channels.filter((item) => {return item.id === 'wxpay'})[0];
-                console.log(JSON.stringify(aliChannel));
-                console.log(JSON.stringify(wxChannel));
                 let bodyall = {};
                 if (this.$route.query.cartdata === "1") {
                     let body = {
                         productList: this.bodygoumai,
                         userID: localStorage["uid"],
                         userRemark: sessionStorage["value"],
-                        favourMode: this.couponAmount > 0 ? 1 : 0,
+                        favourMode: this.couponAmount > 0? 1: 0,
                         favourAmount: (this.couponAmount || 0) * 100,
                         favourRelatedCouponID: 0,
                         transportationExpense: 0,
@@ -209,7 +186,7 @@
                         productList: this.dandugoumai,
                         userID: localStorage["uid"],
                         userRemark: sessionStorage["value"],
-                        favourMode: this.couponAmount > 0 ? 1 : 0,
+                        favourMode: this.couponAmount > 0? 1: 0,
                         favourAmount: (this.couponAmount || 0) * 100,
                         favourRelatedCouponID: 0,
                         transportationExpense: 0,
@@ -228,47 +205,22 @@
                         userID: localStorage["uid"],
                         totalAmount: this.price
                     };
-                    console.log(JSON.stringify(orderIDList));
-                    //if (this.isactive === 2) {
+
                     axios({
                         method: "post",
-                        url: this.isactive === 1? ALIPAYSERVER: WXPAYSERVER,
+                        url: this.$config.baseApi + "/wxPay/H5pay",
                         headers: {
                             "Content-Type": "application/json;"
                         },
                         data: JSON.stringify(orderIDList)
-                    }).then((res) => {
-                        console.log(JSON.stringify(res));
-                        let that = this;
-                        plus.payment.request(this.isactive === 1? aliChannel: wxChannel, res.data.data, function (result) {
-                            // console.log(JSON.stringify(result));
-                            plus.nativeUI.alert("支付成功！", function () {
-                                that.$router.push('/user/order/list?status=1');
+                    }).then(res => {
+                        plus.webview.create(res.data.data.mweb_url,
+                            "微信支付", {
+                                additionalHttpHeaders: {Referer: "http://www.ammsshop.com"}
                             });
-                        }, function (error) {
-                            console.log(JSON.stringify(error));
-                            plus.nativeUI.alert("支付失败！");
-                        });
+                        console.log(JSON.stringify(res));
+                        this.$router.replace("/order/end?out_trade_no=" + res.data.data.out_trade_no + "&orderID=" + this.$route.query.orderID);
                     });
-                    //     axios({
-                    //         method: "post",
-                    //         url: this.$config.baseApi + "/wxPay/H5pay",
-                    //         headers: {
-                    //             "Content-Type": "application/json;"
-                    //         },
-                    //         data: JSON.stringify(orderIDList)
-                    //     }).then(res => {
-                    //         console.log(JSON.stringify(res));
-                    //         plus.webview.create(res.data.data.mweb_url,
-                    //             "微信支付", {
-                    //                 additionalHttpHeaders: {Referer: "http://www.dibang126.com"}
-                    //             });
-                    //         console.log(JSON.stringify(res));
-                    //         this.$router.replace("/order/end?out_trade_no=" + res.data.data.out_trade_no + "&orderID=" + this.$route.query.orderID);
-                    //     });
-                    // } else if (this.isactive === 1) {
-                    //
-                    // }
                 } else {
                     axios({
                         method: "post",
@@ -289,71 +241,54 @@
                                 spbillCreateIp: returnCitySN["cip"],
                                 type: 1,
                                 userID: localStorage["uid"],
-                                totalAmount: res.data.data.totalAmount
+                                totalAmount:res.data.data.totalAmount
                             };
-                            console.log(JSON.stringify(orderIDList));
                             // console.log(returnCitySN["cip"])
                             Toast("订单提交成功");
+
                             axios({
                                 method: "post",
-                                url: this.isactive === 1? ALIPAYSERVER: WXPAYSERVER,
+                                url: this.$config.baseApi + "/wxPay/H5pay",
                                 headers: {
                                     "Content-Type": "application/json;"
                                 },
                                 data: JSON.stringify(orderIDList)
-                            }).then((res) => {
-                                console.log(JSON.stringify(res));
-                                let that = this;
-                                plus.payment.request(this.isactive === 1? aliChannel: wxChannel, res.data.data, function (result) {
-                                    // console.log(JSON.stringify(result));
-                                    plus.nativeUI.alert("支付成功！", function () {
-                                        that.$router.push('/user/order/list?status=1');
-                                    });
-                                }, function (error) {
-                                    console.log(JSON.stringify(error));
-                                    plus.nativeUI.alert("支付失败！");
+                            }).then(res => {
+                                plus.webview.create(res.data.data.mweb_url,
+                                    "微信支付", {
+                                    additionalHttpHeaders: {Referer: "http://www.ammsshop.com"}
                                 });
+                                console.log(JSON.stringify(res));
+                                this.$router.replace("/order/end?out_trade_no=" + res.data.data.out_trade_no + "&orderID=" + res.data.data.orderID);
+                                // if (res.err_msg == "get_brand_wcpay_request:ok") {
+                                //     console.log("pay支付成功");
+                                //     console.log(res);
+                                //     this.opya = res;
+                                //     this.$router.push({
+                                //         path: "/order/end",
+                                //         query: {status: res.err_msg, type: true}
+                                //     });
+                                // } else {
+                                //     console.log("pay支付成功");
+                                //     console.log(res);
+                                //     this.opya = res;
+                                //     this.$router.push({
+                                //         path: "/order/end",
+                                //         query: {status: res.err_msg, type: true}
+                                //     });
+                                //     console.log(res);
+                                //     this.opya = res;
+                                //     console.log("pay支付失败");
+                                //     if (this.$route.query.zhibo) {
+                                //         getMessage(this.roomName, this.userName, "", 2, this.userType);
+                                //         var vm = this;
+                                //         vm.$router.go(-1);
+                                //     } else {
+                                //         var vm = this;
+                                //         vm.$router.go(-1);
+                                //     }
+                                // }
                             });
-                            // if (this.isactive === 2) {
-                            //     axios({
-                            //         method: "post",
-                            //         url: this.$config.baseApi + "/wxPay/H5pay",
-                            //         headers: {
-                            //             "Content-Type": "application/json;"
-                            //         },
-                            //         data: JSON.stringify(orderIDList)
-                            //     }).then(res => {
-                            //         plus.webview.create(res.data.data.mweb_url,
-                            //             "微信支付", {
-                            //                 additionalHttpHeaders: {Referer: "http://www.dibang126.com"}
-                            //             });
-                            //         console.log(JSON.stringify(res));
-                            //         this.$router.replace("/order/end?out_trade_no=" + res.data.data.out_trade_no + "&orderID=" + res.data.data.orderID);
-                            //     });
-                            // } else if (this.isactive === 1) {
-                            //     const ALIPAYSERVER = this.$config.baseApi + "/zfbPay/toPayApp";
-                            //     const WXPAYSERVER = this.$config.baseApi + "/wxPay/H5pay";
-                            //     console.log(ALIPAYSERVER);
-                            //
-                            //     axios({
-                            //         method: "POST",
-                            //         url: ALIPAYSERVER,
-                            //         headers: {
-                            //             "Content-Type": "application/json;"
-                            //         },
-                            //         data: JSON.stringify(orderIDList)
-                            //     }).then((res) => {
-                            //         console.log(JSON.stringify(res));
-                            //         plus.payment.request(this.channels[0], res.data.data, function (result) {
-                            //             console.log(JSON.stringify(result));
-                            //             plus.nativeUI.alert("支付成功！", function () {
-                            //
-                            //             });
-                            //         }, function (error) {
-                            //             plus.nativeUI.alert("支付失败：" + error.code);
-                            //         });
-                            //     });
-                            // }
                         } else {
                             Toast("订单提交失败");
                         }

@@ -159,11 +159,11 @@
     .goods-main .classify-wrap .classify-item {
         color: rgb(154, 154, 154);
         width: 100%;
-        min-height: 0.8rem;
+        height: 0.8rem;
         background-color: #FFFFFF;
         font-size: 0.28rem;
         text-align: center;
-        /* line-height: 0.8rem; */
+        line-height: 0.8rem;
         overflow: hidden;
     }
 

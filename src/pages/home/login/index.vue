@@ -4,7 +4,7 @@
 		<div class='main login-main'>
 			<div class='member-img'>
 				<div class="img">
-					<img src="../../../assets/images/common/dibang2.png" alt="">
+					<img src="../../../assets/images/common/aimumisi.png" alt="">
 				</div>
 			</div>
 
@@ -85,7 +85,7 @@
 			},
 			doLogin() {
 				if (this.phoneNumber.match(/^\s*$/)) {
-					Toast('您输入的账号和密码不正确，请重新输入');
+					Toast('您输入的账号和密码不正确，请重新输入')
 					return;
 				}
 				if (!this.phoneNumber.match(/^1[0-9][0-9]\d{8}$/)) {
@@ -102,7 +102,7 @@
 					return;
 				}
 				if (this.password.length > 16) {
-					Toast("请输入一个小于16位的密码");
+					Toast("请输入一个小于12位的密码");
 					return;
 				}
 
@@ -157,7 +157,6 @@
 		height: 1.3rem;
 		border: #EFEFEF solid 1px;
 		border-radius: 50%;
-		background-color: #AAA;
 	}
 
 	.member-img .img img {

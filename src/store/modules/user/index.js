@@ -36,20 +36,13 @@ let modules = {
             state.isLogin = payload.isLogin;
             state.authToken = payload.authToken;
             state.userType = payload.userType;
-            state.head = payload.head;
             localStorage["uid"] = payload.uid;
             localStorage['nickname'] = payload.nickname;
             localStorage['isLogin'] = payload.isLogin;
             localStorage['phoneNumber'] = payload.phoneNumber;
             localStorage["authToken"] = payload.authToken;
             localStorage['userType'] = payload.userType;
-            localStorage['head'] = payload.head;
             console.log(JSON.stringify(this.state.user));
-        },
-        ["SET_HEAD"](state, head) {
-            console.log(head)
-            state.head = head;
-            localStorage['head'] = head;
         },
         ["OUT_LOGIN"](state) {
             state.uid = "";
@@ -59,7 +52,6 @@ let modules = {
             state.authToken = "";
             state.points = 0;
             state.userType = "";
-            state.head = "";
             // state.head="";
             localStorage.removeItem("phoneNumber");
             localStorage.removeItem("uid");
@@ -69,7 +61,6 @@ let modules = {
             localStorage.removeItem("cartData");
             localStorage.removeItem("userType");
             sessionStorage.removeItem("addsid");
-            sessionStorage.removeItem("head");
         },
         ["SET_USER_INFO"](state, payload) {
             state.head = payload.head;
@@ -115,8 +106,7 @@ let modules = {
                             phoneNumber: res.data.phoneNumber,
                             isLogin: true,
                             authToken: res.data.token,
-                            userType: res.data.userType,
-                            head: res.data.portrait
+                            userType: res.data.userType
                         });
                 }
                 if (payload.success) {

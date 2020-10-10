@@ -3,24 +3,24 @@
 
         <div class="order">
             <div class='details-header'>
-                <div @click="goback" class='tab-wrap back'>
+                <div class='tab-wrap back' @click="goback">
                     <div>确认订单</div>
                 </div>
             </div>
         </div>
 
         <div class='main'>
-            <div @click="$router.push('/address')" class='address-wrap'>
+            <div class='address-wrap' @click="$router.push('/address')">
                 <div class='persion-info' v-show="receiverName?true:false">
                     <span>收货人：{{receiverName}}</span><span>{{mobilePhone}}</span>
                 </div>
                 <div class='address' v-show="receiverName?true:false">
-                    <img alt="收货地址" src="../../../assets/images/home/cart/map.png"/>
+                    <img src="../../../assets/images/home/cart/map.png" alt="收货地址"/>
                     <span>{{showArea}}</span>
                 </div>
-                <div class='address-null' style="display: flex;" v-show="!receiverName?true:false">
+                <div v-show="!receiverName?true:false" class='address-null' style="display: flex;">
                     <div style="width: 0.5rem;height: 0.5rem;">
-                        <img alt="收货地址" src="../../../assets/images/home/cart/map.png" style="width:100%;height:100%;"/>
+                        <img style="width:100%;height:100%;" src="../../../assets/images/home/cart/map.png" alt="收货地址"/>
                     </div>
                     <div>
                         您的收货地址为空,点击添加收货地址
@@ -32,7 +32,7 @@
             <!-- 多个商品结算 -->
             <div class='goods-wrap' v-show="this.$route.query.cartdata">
                 <div style="margin:0 0.4rem;font-weight: bold;color: #333333;">您的订单明细</div>
-                <div :key="index" class='goods-list' v-for="(item,index) in cartsorderdata">
+                <div class='goods-list' v-for="(item,index) in cartsorderdata" :key="index">
                     <div class='image'><img :src="item.cartData.img" alt=""/></div>
                     <div class='goods-param'>
                         <div style="
@@ -42,17 +42,17 @@
                             <div class='title'>
                                 {{item.cartData.productName}}
                             </div>
-                            <div style="font-size: 0.24rem; color: red;">
+                            <div style="font-size: 0.24rem;color: #868686;">
                                 ¥{{item.cartData.attrs[0].param[0].bandPrice.toFixed(2)}}
                             </div>
                         </div>
                         <div class='amount'>x{{item.cartData.amount}}</div>
                         <div style="display: flex;align-items: center;justify-content: space-between;">
                             <div class='attr'>
-                                颜色:<span :key="index2" v-for="(item2,index2) in item">
+                                颜色:<span v-for="(item2,index2) in item" :key="index2">
 									{{item2.attrs[0].param[1].colourName}}
 								</span>
-                                ;规格:<span :key="index2" v-for="(item2,index2) in item">
+                                ;规格:<span v-for="(item2,index2) in item" :key="index2">
 									<template>
 										{{item2.attrs[0].param[0].standard}}
 									</template>
@@ -71,27 +71,27 @@
             <div class='goods-wrap' v-show="!this.$route.query.cartdata">
                 <div style="margin:0 0.4rem;font-weight: bold;color: #333333;">您的订单明细</div>
 
-                <div :key="'inde'+index" class='goods-list' v-for="(item,index) in orderBuy">
+                <div class='goods-list' v-for="(item,index) in orderBuy" :key="'inde'+index">
                     <div class='image'><img :src="item.img" alt=""/></div>
                     <div class='goods-param'>
                         <div style="display: flex;align-items: center;justify-content: space-between;">
                             <div class='title'>
                                 {{item.productName}}
                             </div>
-                            <div style="font-size: 0.24rem;color: red;">
+                            <div style="font-size: 0.24rem;color: #868686;">
                                 ¥{{(item.attrs[0].param[0].bandPrice*0.01).toFixed(2)}}
                             </div>
                         </div>
                         <div class='amount'>x{{item.amount}}</div>
                         <div style="display: flex;align-items: center;justify-content: space-between;">
                             <div class='attr'>
-                                颜色:<span :key="'inde'+index2" v-for="(item2,index2) in item.attrs">
+                                颜色:<span v-for="(item2,index2) in item.attrs" :key="'inde'+index2">
 									<template v-for="(item3) in item2.param">
 										{{item3.colourName}}
 									</template>
 								</span>
-                                ;规格:<span :key="index2" v-for="(item2,index2) in item.attrs">
-										<span :key="index3" v-for="(item3,index3) in item2.param">
+                                ;规格:<span v-for="(item2,index2) in item.attrs" :key="index2">
+										<span v-for="(item3,index3) in item2.param" :key="index3">
 											{{item3.standard}}
 										</span>
 									</span>
@@ -118,7 +118,7 @@
             </ul>
             <ul class='total-wrap'>
                 <li>优惠券</li>
-                <li> {{(youhui === 0 || !youhui)? '未使用优惠券': ('-￥' + youhui.toFixed(2))}}</li>
+                <li>- ¥{{youhui.toFixed(2)}}</li>
             </ul>
             <ul class='total-wrap' style="border-bottom:solid 8px #F6F6F60;">
                 <li>实付</li>
@@ -138,7 +138,7 @@
             </ul>
             <ul class='total-wrap orderBeiZhu'>
                 <li>
-                    <textarea cols="90" id="" name="" placeholder="您有什么要求请在这里留言，我们会有专人跟您联系" rows="10"
+                    <textarea placeholder="您有什么要求请在这里留言，我们会有专人跟您联系" name="" id="" cols="90" rows="10"
                               v-model="value"></textarea>
                 </li>
             </ul>
@@ -157,15 +157,22 @@
 				</span>
             </div>
 
-            <div @click="submitOrder()" class='balance-btn'>提交订单</div>
+            <div class='balance-btn' @click="submitOrder()">提交订单</div>
         </div>
     </div>
 </template>
 
 <script>
-    import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
+    import {
+        mapState,
+        mapGetters,
+        mapActions,
+        mapMutations
+    } from "vuex";
     // import SubHeader from "../../../components/sub_header";
-    import {Toast} from 'vant'
+    import {
+        Toast
+    } from 'vant'
     import axios from 'axios';
 
     export default {
@@ -189,8 +196,7 @@
                 orderBuy: state => state.cart.orderBuy,
                 price: state => state.cart.price,
                 couponAmount: state => state.cart.couponAmount,
-                couponID: state => state.cart.couponID,
-                address: state => state.address.address
+                couponID: state => state.cart.couponID
             }),
             ...mapGetters({
                 total: "cart/total",
@@ -221,59 +227,12 @@
             }).then(res => {
                 console.log(JSON.stringify(res));
                 if (res.data.status === 1) {
-                    this.youhui = ((res.data.data || {}).couponAmount || 0) / 100;
+                    this.youhui = res.data.data.couponAmount / 100;
                     // this.couponID = res.data.data.
                 } else {
                     this.youhui = 0;
                 }
             });
-
-            //this.getAddress();
-            axios({
-                method: "post",
-                url: this.$config.baseApi + "/address/query",
-                params: {
-                    userID: localStorage['uid'],
-                },
-                headers: {
-                    "Content-Type": "application/json;"
-                },
-
-            }).then((res) => {
-                if (res.data.status === 0) {
-                    console.log(JSON.stringify(res));
-                    const addressList = res.data.data;
-                    if (addressList.length > 0) {
-                        let defaultAddress;
-                        defaultAddress = addressList.filter((addr) => {
-                            return addr.usual === 1
-                        });
-                        if (defaultAddress.length === 0) {
-                            defaultAddress = addressList[0];
-                        } else {
-                            defaultAddress = defaultAddress[0];
-                        }
-
-                        this.userAddressID = defaultAddress.userAddressID;
-                        this.receiverName = defaultAddress.receiverName;
-                        this.mobilePhone = defaultAddress.mobilePhone;
-                        this.showArea = defaultAddress['province'] + defaultAddress['county'] + defaultAddress['city'] + defaultAddress['address'];
-
-                        sessionStorage['userAddressID'] = this.userAddressID;
-                        sessionStorage['receiverName'] = this.receiverName;
-                        sessionStorage['province'] = defaultAddress['province'];
-                        sessionStorage['county'] = defaultAddress['county'];
-                        sessionStorage['city'] = defaultAddress['city'];
-                        sessionStorage['address'] = defaultAddress['address'];
-                        sessionStorage['mobilePhone'] = this.mobilePhone;
-                        console.log(JSON.stringify(defaultAddress));
-                    }
-                    Toast(res.data.message)
-                } else {
-                    Toast(res.data.message)
-                }
-            });
-            console.log("created end");
         },
         mounted() {
             document.title = this.$route.meta.title;
@@ -281,8 +240,9 @@
         methods: {
             ...mapActions({
                 getAddressInfo: "address/getAddressInfo",
-                getAddress: "address/getAddress",
-                ddOrder: "order/addOrder",
+                getDefaultAddress: "address/getDefaultAddress",
+                addOrder: "order/addOrder",
+
             }),
             ...mapMutations({
                 GET_GOODSPRICE: "cart/GET_GOODSPRICE",

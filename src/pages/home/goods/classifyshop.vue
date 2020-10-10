@@ -146,19 +146,15 @@
             initfor() {
 
                 let jsonParams = {
-                    keyword: this.name,
                     pricepaixu: this.pricepaixu,
                     xiaoliangpaixu: this.xiaoliangpaixu,
                     levelThreeCategoryID: this.$route.query.levelThreeCategoryID,
                 };
                 let jsonParams2 = {
-                    keyword: this.name,
                     pricepaixu: this.pricepaixu,
                     xiaoliangpaixu: this.xiaoliangpaixu,
                     levelTwoCategoryID: this.$route.query.levelTwoCategoryID,
                 }
-
-                //console.log(jsonParams2);
                 if (this.$route.query.index === "0") {
                     this.foreth(jsonParams)
                 }

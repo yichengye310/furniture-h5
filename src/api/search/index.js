@@ -13,35 +13,33 @@ export function getSearchData(data){
 	let xiaoliangpaixu=data.xiaoliangpaixu?data.xiaoliangpaixu:"";
     let page=data.page?data.page:1;
 	let levelThreeCategoryID = data.levelThreeCategoryID?data.levelThreeCategoryID:"";
-
+	
 	let levelTwoCategoryID = data.levelTwoCategoryID?data.levelTwoCategoryID:"";
-
+	
 	// console.log(data.levelThreeCategoryID)
     let cid=data.cid?data.cid:"";
     let param=data.param && data.param!=='[]'?data.param:"";
 	//product/productListByPage?pageSize=3&pageNo=1&productName=床垫
-
+	
  //    let url=config.baseApi+"/home/goods/search?kwords="+
 	// kwords+"&param="+param+"&page="+page+"&price1="+
 	// price1+"&price2="+price2+"&otype="+otype+"&cid="
 	// +cid+"&token="+config.token;
     // console.log(url);
 	//pageNo=1&pageSize=20
-	let url = config.baseApi +
+	let url = config.baseApi + 
 	"/product/productListByPage?productName="+
 	kwords+"&state=1&priceFlag="+pricepaixu+"&browseNumFlag="+xiaoliangpaixu+"&pageNo="+page+"&pageSize="+"&levelThreeCategoryID="+levelThreeCategoryID
 
 	let url2 = config.baseApi +
 	"/product/productListByPage?"+"&state=1&priceFlag="+pricepaixu+"&browseNumFlag="+xiaoliangpaixu+"&pageNo="+page+"&pageSize="+
 	"&levelTwoCategoryID="+levelTwoCategoryID
-
-	console.log(url);
-	console.log(url2);
+	
 	if(data.levelTwoCategoryID){
-		console.log(data.levelTwoCategoryID);
+		console.log(data.levelTwoCategoryID)
 		return request(url2)
 	}else{
 		return request(url)
 	}
-
+    
 }

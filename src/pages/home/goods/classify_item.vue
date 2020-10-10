@@ -147,7 +147,7 @@
 
     .goods-wrap .goods-items-wrap ul li:nth-child(2) {
         width: 90%;
-        /* height: 0.8rem; */
+        height: 0.8rem;
         font-size: 0.24rem;
         overflow: hidden;
         text-align: center;
@@ -155,8 +155,5 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         margin-top: 0.2rem;
-    }
-    .goods-wrap .goods-items-wrap ul li {
-        min-height: 0.8rem;
     }
 </style>

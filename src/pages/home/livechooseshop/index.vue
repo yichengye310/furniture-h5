@@ -2,30 +2,30 @@
     <div class='page'>
         <div class='search-top'>
             <div class='search-header'>
-                <div @click="gotolivezheshop()" class='back'></div>
-                <div @click="searchShow.show=true" class='search-wrap'>
+                <div class='back' @click="$router.go(-1)"></div>
+                <div class='search-wrap' @click="searchShow.show=true">
                     <div class='search-icon'></div>
                     <div class='search-text'>
-                        <input class='search'
-                               placeholder="请输入宝贝名称"
-                               type="text"
-                               v-model="keyword"/>
-                    </div>
+						<input type="text"
+						class='search'
+						placeholder="请输入宝贝名称"
+						v-model="keyword" />
+					</div>
                 </div>
-                <div @click="gotolivezheshop()" class='screen-btn'>选择</div>
+                <div class='screen-btn' @click="gotolivezheshop()">选择</div>
             </div>
 
         </div>
         <div class='goods-main'>
-            <div :key="index" @click="liveto(index)"
-                 class='goods-list'
-                 v-for="(item,index) in searchData">
-                <div :class="{'select-btn':true,'active':item.istochoose}"></div>
+            <div class='goods-list' v-for="(item,index) in searchData"
+			:key="index"
+			@click="liveto(index)">
+				<div :class="{'select-btn':true,'active':item.istochoose}"></div>
                 <div class='image'>
-                    <img
-                            :data-echo="item.titleImg"
-                            src="../../../assets/images/common/lazyImg.jpg"/>
-                </div>
+					<img
+					src="../../../assets/images/common/lazyImg.jpg"
+					:data-echo="item.titleImg"/>
+				</div>
                 <div class='goods-content'>
                     <div class='goods-title'>{{item.productName}}</div>
                     <div class='price'>¥{{(item.lowPrice*0.01).toFixed(2)}}</div>
@@ -34,64 +34,62 @@
             </div>
             <div class="no-data" v-show="searchData.length<=0">没有相关商品！</div>
         </div>
-        <my-search :isLocal="true" :istypetolive='true' :show="searchShow"></my-search>
+        <my-search :show="searchShow" :isLocal="true" :istypetolive='true'></my-search>
     </div>
 </template>
 
 <script>
-    import {mapActions, mapMutations, mapState} from 'vuex';
+    import {mapState,mapActions,mapMutations} from 'vuex';
     import MySearch from '../../../components/search';
+    import IScroll from '../../../assets/js/libs/iscroll';
     import UpRefresh from '../../../assets/js/libs/uprefresh';
-
     export default {
         name: "goods-search",
         data() {
             return {
                 keyword: this.$route.query.keyword ? this.$route.query.keyword : "",
-                searchShow: {show: false},
-                isPriceOrder: false,
-                isSalesOrder: false,
-                isScreen: false,
-                isClassify: false,
+                searchShow:{show:false},
+                isPriceOrder:false,
+                isSalesOrder:false,
+                isScreen:false,
+                isClassify:false,
 
             }
         },
-        components: {
+        components:{
             MySearch
         },
-        computed: {
+        computed:{
             ...mapState({
-                searchData: state => state.search.searchData,
+				searchData:state=>state.search.searchData,
 
             })
         },
-        created() {
-            this.otype = "all";
-            this.pullUp = new UpRefresh();
+        created(){
+            this.otype="all";
+            this.pullUp=new UpRefresh();
             this.init();
-            let jsonParams = {keyword: this.keyword};
-            this.getSearch({
-                ...jsonParams, success: (res) => {
-                    this.$nextTick(() => {
-                        this.$utils.lazyImg();
-                    });
-                    // console.log(res)
-                    this.pullUp.init({"curPage": 1, "maxPage": res.data.pages, "offsetBottom": 100}, (page) => {
-                        let jsonParams = {keyword: this.keyword, page: page};
-                        this.getSearchPage({
-                            ...jsonParams,
-                            success: (res) => {
-                                this.$nextTick(() => {
-                                    this.$utils.lazyImg();
-                                });
-                            }
-                        })
-                    });
-                }
-            });
+			let jsonParams={keyword:this.keyword};
+			this.getSearch({
+				...jsonParams,success:(res)=>{
+			        this.$nextTick(()=>{
+			            this.$utils.lazyImg();
+			        });
+					// console.log(res)
+			        this.pullUp.init({"curPage":1,"maxPage":res.data.pages,"offsetBottom":100},(page)=>{
+			           let jsonParams={keyword:this.keyword,page:page};
+			           this.getSearchPage({
+			           	...jsonParams,
+			           	success:(res)=>{
+			           	        this.$nextTick(()=>{
+			           	            this.$utils.lazyImg();
+			           	        });
+			           	}})
+			        });
+			}});
 
         },
-        mounted() {
+        mounted(){
             // this.$refs['screen'].addEventListener("touchmove",this.disableScreenTochmove);
             // this.myScroll=new IScroll(this.$refs['screen'], {
             //     scrollX : false,
@@ -99,69 +97,66 @@
             //     preventDefault : false
             // });
         },
-        methods: {
+        methods:{
             ...mapActions({
-                getSearch: "search/getSearch",
-                getSearchPage: "search/getSearchPage",
+                getSearch:"search/getSearch",
+                getSearchPage:"search/getSearchPage",
             }),
             ...mapMutations({
-                SET_PARAMS: "search/SET_PARAMS",
-                "SET_LIVE_SHOP": "live/SET_LIVE_SHOP",
+                SET_PARAMS:"search/SET_PARAMS",
+				"SET_LIVE_SHOP":"live/SET_LIVE_SHOP",
             }),
 
-            liveto(w) {
-                this.searchData[w].istochoose = !this.searchData[w].istochoose
-            },
-            gotolivezheshop() {
-                let livetheshop = []
-                for (let i = 0; i < this.searchData.length; i++) {
-                    if (this.searchData[i].istochoose === true) {
-                        livetheshop.push(this.searchData[i])
-                    }
-                }
-                // console.log(this.$route.query.livetitle)
-                this.SET_LIVE_SHOP({livetheshop: livetheshop});
-                localStorage['liveshoplength'] = livetheshop.length;
-                // this.$router.go(-1)
-                this.$router.push('/live?active=3')
-            },
-            init() {
-                let jsonParams = {keyword: this.keyword};
-                this.getSearch({
-                    ...jsonParams, success: (res) => {
-                        this.$nextTick(() => {
+			liveto(w){
+				this.searchData[w].istochoose = !this.searchData[w].istochoose
+			},
+			gotolivezheshop(){
+				let livetheshop=[]
+				for(let i=0;i<this.searchData.length;i++){
+					if(this.searchData[i].istochoose === true){
+						livetheshop.push(this.searchData[i])
+					}
+				}
+				// console.log(this.$route.query.livetitle)
+				this.SET_LIVE_SHOP({livetheshop:livetheshop});
+				localStorage['liveshoplength'] = livetheshop.length;
+				// this.$router.go(-1)
+				this.$router.push('/live?active=3')
+			},
+            init(){
+                let jsonParams={keyword:this.keyword};
+                this.getSearch({...jsonParams,success:(res)=>{
+                        this.$nextTick(()=>{
                             this.$utils.lazyImg();
                         });
-                        this.pullUp.init({"curPage": 1, "maxPage": res.data.pages, "offsetBottom": 100}, (page) => {
-                            let jsonParams = {keyword: this.keyword, page: page};
-                            this.getSearchPage({
-                                ...jsonParams,
-                                success: (res) => {
-                                    this.$nextTick(() => {
-                                        this.$utils.lazyImg();
-                                    });
-                                }
-                            })
-                        });
-                    }
-                });
+						this.pullUp.init({"curPage":1,"maxPage":res.data.pages,"offsetBottom":100},(page)=>{
+							let jsonParams={keyword:this.keyword,page:page};
+						    this.getSearchPage({
+								...jsonParams,
+								success:(res)=>{
+								        this.$nextTick(()=>{
+								            this.$utils.lazyImg();
+								        });
+								}})
+						});
+                }});
             },
             //确认搜索
-            sureSubmit() {
-                this.isScreen = false;
+            sureSubmit(){
+                this.isScreen=false;
                 this.SET_PARAMS();
                 this.init();
             }
         },
-        beforeRouteUpdate(to, from, next) {
-            this.keyword = to.query.keyword;
-            this.isPriceOrder = false;
-            this.otype = "all";
-            this.isSalesOrder = false;
+        beforeRouteUpdate(to,from,next){
+            this.keyword=to.query.keyword;
+            this.isPriceOrder=false;
+            this.otype="all";
+            this.isSalesOrder=false;
             this.init();
             next();
         },
-        beforeDestroy() {
+        beforeDestroy(){
             this.pullUp.uneventSrcoll();
         }
     }
@@ -193,26 +188,26 @@
         -webkit-justify-content: space-between;
         align-items: center;
         -webkit-align-items: center;
-        padding-left: 0.3rem;
-        padding-right: 0.3rem;
-        box-sizing: border-box;
+		padding-left:0.3rem;
+		padding-right:0.3rem;
+		box-sizing: border-box;
     }
 
     .search-header .back {
         width: 0.4rem;
         height: 0.7rem;
-        background-image: url('../../../assets/images/home/goods/back.png');
+        background-image:url('../../../assets/images/home/goods/back.png');
         background-size: 45%;
         background-repeat: no-repeat;
         background-position: center;
     }
 
     .search-header .search-wrap {
-        width: 4.8rem;
+        width: 90%;
         background: #F2F2F2;
         height: 0.6rem;
         border-radius: 0.5rem;
-        margin-left: 0.2rem;
+		margin-left: 0.2rem;
         display: flex;
         display: -webkit-flex;
         align-items: center;
@@ -235,20 +230,19 @@
         height: auto;
         font-size: 0.32rem;
     }
-
-    .search-header .search-wrap .search-text input {
-        width: 85%;
-        height: 100%;
-        border-radius: 0.5rem;
-        background: #F2F2F2;
-    }
+	.search-header .search-wrap .search-text input{
+		width:85%;
+		height:100%;
+		border-radius: 0.5rem;
+		background: #F2F2F2;
+	}
 
 
     .search-header .screen-btn {
         width: 0.8rem;
-        height: 0.4rem;
-        color: #333333;
-        margin-left: 0.2rem;
+        height:  0.4rem;
+		color: #333333;
+		margin-left: 0.2rem;
     }
 
     .search-top .order-main {
@@ -324,8 +318,7 @@
         height: auto;
         margin-top: 1rem;
     }
-
-    .goods-main .goods-list .select-btn {
+.goods-main .goods-list .select-btn {
         width: 0.4rem;
         height: 0.4rem;
         border: #EFEFEF solid 1px;
@@ -341,12 +334,11 @@
         background-position: center;
         border: #FFFFFF solid 1px;
     }
-
     .goods-main .goods-list {
         width: 100%;
         height: 2rem;
         display: flex;
-        align-items: center;
+		align-items: center;
         display: -webkit-flex;
         justify-content: space-between;
         -webkit-justify-content: space-between;
@@ -371,16 +363,16 @@
     }
 
     .goods-main .goods-list .goods-content {
-        margin-left: 0.2rem;
-        padding: 0.5rem 0;
+		margin-left: 0.2rem;
+		padding: 0.5rem 0;
         width: 67%;
         height: 98%;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        box-sizing: border-box;
-        /* line-height: 1rem; */
-        border-bottom: solid 1px rgb(154, 154, 154, 0.1);
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		box-sizing: border-box;
+		/* line-height: 1rem; */
+        border-bottom: solid 1px rgb(154,154,154,0.1);
     }
 
     .goods-main .goods-list .goods-title {

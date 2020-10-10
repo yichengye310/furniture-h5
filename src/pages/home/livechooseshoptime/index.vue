@@ -2,7 +2,7 @@
     <div class='page'>
         <div class='search-top'>
             <div class='search-header'>
-                <div class='back' @click="gotolivezheshop()"></div>
+                <div class='back' @click="$router.go(-1)"></div>
                 <div class='search-wrap' @click="searchShow.show=true">限时抢购商品</div>
 				<div class='screen-btn' @click="gotolivezheshop()">确认</div>
             </div>

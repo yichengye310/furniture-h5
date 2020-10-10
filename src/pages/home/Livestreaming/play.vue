@@ -33,7 +33,7 @@
         <div class="title">
             <div class="left">
                 <div class="logo">
-                    <img alt src="../../../assets/images/common/dibang2.png"/>
+                    <img alt src="../../../assets/images/common/aimumisi.png"/>
                 </div>
                 <div class="des">
                     <div class="name">{{number}}人观看中</div>
@@ -672,16 +672,13 @@
             },
             closeVideo() {
                 this.$router.go(-1);
-                if (document.querySelectorAll("canvas").length >= 1) {
-                    document.body.removeChild(document.querySelectorAll("canvas")[0]);
-                }
             },
             closeVideo1() {
-               Toast("直播中断");
+                Toast("直播中断");
                 // this.$router.go(-1);
             },
             closeVideo2() {
-              //  Toast("发生错误");
+                Toast("发生错误");
                 //this.$router.go(-1);
             },
             closeVideo3() {
@@ -784,26 +781,6 @@
             },
             changeColor() {
                 this.$refs.aixin.src = require("../../../assets/images/live/dianle.png");
-                if (localStorage['isLogin']) {
-                    let roomName = localStorage.getItem("roomName");
-                        getMessage(
-                            localStorage.getItem("roomName"),
-                            this.userName,
-                            this.value,
-                            8,
-                            this.userType
-                        );
-                        let barrage = this.$refs.barrage;
-                        barrage.scrollTop = barrage.scrollHeight;
-                } else {
-                    Dialog.confirm({
-                        message: "请先登录"
-                    }).then(() => {
-                        this.$router.replace("/login");
-                    }).catch(() => {
-
-                    });
-                }
             },
 
             initWebSocket() {
@@ -856,13 +833,10 @@
                 //数据接收
                 // const redata = JSON.parse(e.data); // 接收数据
                 // this.msg = redata;
-
-                let msgList = JSON.parse(e.data);
+                this.msgList = JSON.parse(e.data);
 
                 console.log(this.msgList);
-                if (msgList.pushType !== 8) {
-                    this.msgList = msgList;
-                }
+
                 //接收数据，同时判断数据的类型
                 //当为消息类型的数据的时候，显示消息
                 if (this.msgList.pushType === 7) { // 发优惠券

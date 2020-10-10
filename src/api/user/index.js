@@ -46,8 +46,7 @@ export function getUserInfoData(uid){
 
 //上传头像
 export function uploadHeadData(data){
-    // return request(config.baseApi+"/user/myinfo/formdatahead?token="+config.token,"file",data);
-    return request(config.baseApi+"/user/changePortrait?token="+config.token,"file",null,data);
+    return request(config.baseApi+"/user/myinfo/formdatahead?token="+config.token,"file",data);
 }
 
 //修改会员信息

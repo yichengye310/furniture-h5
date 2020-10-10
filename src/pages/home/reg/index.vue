@@ -4,7 +4,7 @@
 		<div class='main'>
 			<div class='member-img'>
 				<div class="img">
-					<img src="../../../assets/images/common/dibang2.png" alt="">
+					<img src="../../../assets/images/common/aimumisi.png" alt="">
 				</div>
 			</div>
 			<div class='cellphone-wrap' style="margin-top: 0.8rem;">
@@ -278,7 +278,6 @@
 		height: 1.3rem;
 		border: #EFEFEF solid 1px;
 		border-radius: 50%;
-		background-color: #AAA;
 	}
 
 	.member-img .img img {

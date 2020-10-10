@@ -14,7 +14,7 @@
                         {{item.deliverPhoneNum}}
                     </div>
                     <div class='address'>
-                        {{item.deliverAddress}}
+                        {{item.expressTime}}
                     </div>
                 </div>
                 <div class='address-info'>
@@ -48,7 +48,10 @@
                         <span class='amount'>{{item.productStandard}}</span>
                     </div>
                 </div>
-                <div class='price'><div class="total" style="color: red !important;">¥{{ item.totalAmount * .01 }}</div>x{{item.productNumber}}</div>
+                <div class="price">
+                    <div class="total-price" style="color: red;">￥{{(item.totalAmount * 0.01).toFixed(2)}}</div>
+                    <div>x{{item.productNumber}}</div>
+                </div>
             </div>
             <div class='total-wrap'>
                 <ul class='total'>
@@ -61,7 +64,7 @@
                 </ul>
                 <ul class='total'>
                     <li>优惠券</li>
-                    <li>{{ (item.favourAmount == 0 || !item.favourAmount)? '不使用优惠': ('-¥' + (item.favourAmount * .01)) }}</li>
+                    <li>{{ item.favourAmount === 0? '不使用优惠券': ('-¥' + item.favourAmount * .01) }}</li>
                 </ul>
                 <ul class='total'>
                     <li>实付</li>
@@ -222,7 +225,7 @@
 
     .address-wrap .address-info .name img {
         width: 0.4rem;
-        height: 0.5rem;
+        height: 0.4rem;
         margin-right: 0.2rem;
         vertical-align: middle;
     }
@@ -237,8 +240,8 @@
     }
 
     .address-wrap .address-info .address {
-        width: 6.3rem;
-        height: .75rem;
+        width: 95%;
+        height: 0.8rem;
         overflow: hidden;
         font-size: 0.28rem;
         position: absolute;
@@ -247,11 +250,6 @@
         top: 0.9rem;
         color: #848689;
         margin-left: 0.2rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
     }
 
     .buy-title {
@@ -300,6 +298,10 @@
     .goods-list .price {
         font-size: 0.28rem;
         text-align: right;
+    }
+
+    .good-list .price .total-price {
+        color: red;
     }
 
     .goods-list .goods-info .title {

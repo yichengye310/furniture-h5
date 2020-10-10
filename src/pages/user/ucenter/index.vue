@@ -12,13 +12,12 @@
                     </div>
                 </div>
 
-                <div class="nickname" @click="isLogin?'':goPage('/login')">{{username?username:'登录/注册'}}</div>
+                <div class="nickname">{{username?username:'昵称'}}</div>
             </div>
-            <div class="huiyuan-img" @click="$router.push('/vip')">
-                <img :src="userType == '2'? require('../../../assets/images/user/my/lijijinru@2x.png'):
-                require('../../../assets/images/user/my/lijikaitong@2x.png')" alt/>
+            <div class="huiyuan-img">
+                <img src="../../../assets/images/user/my/huiyuan.png" alt/>
                 <!-- <div class="now" @click="goPage('/membercenter')">立即开通</div> -->
-<!--                <div class="now" @click="$router.push('/vip')">{{userType == '2'? '立即进入': '立即开通'}}</div>-->
+                <div class="now" @click="$router.push('/vip')">{{userType == '2'? '立即进入': '立即开通'}}</div>
             </div>
         </div>
         <div class="order-name-wrap">
@@ -56,8 +55,7 @@
                     <span>{{orderAppraised.length < 100?orderAppraised.length:'...'}}</span>
                 </div>
                 <div class="icon comment"></div>
-                <!-- <div class="text">待评价</div> -->
-                <div class="text">已完成</div>
+                <div class="text">待评价</div>
             </div>
             <div class="item" @click="isLogin?goPage('/user/order/list?status=4'):goPage('/login')">
                 <div class="item-xiaoyuanquan" v-show="shouhou.length>0">
@@ -130,7 +128,7 @@
                 login: "user/login"
             }),
             kefudianhua() {
-                window.location.href = "tel:051269391566";
+                window.location.href = "tel:051269571961";
             },
             goPage(url) {
                 this.$router.push(url);
@@ -211,17 +209,16 @@
         position: absolute;
         top: 0.45rem;
         right: 0.3rem;
-        width: .8rem;
     }
 
     .user-info-wrap .right-btn-wrapper .right-btn {
-        background-image: url("../../../assets/images/user/my/setto.png");
+        height: 0.5rem;
+        width: .5rem;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAkCAYAAAAD3IPhAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ4IDc5LjE2NDAzNiwgMjAxOS8wOC8xMy0wMTowNjo1NyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIxLjAgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjIxNEFBRjE2ODVENDExRUFCQjE4QzI4MTFDNEJBRjg0IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjIxNEFBRjE3ODVENDExRUFCQjE4QzI4MTFDNEJBRjg0Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MjE0QUFGMTQ4NUQ0MTFFQUJCMThDMjgxMUM0QkFGODQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MjE0QUFGMTU4NUQ0MTFFQUJCMThDMjgxMUM0QkFGODQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5xGDcVAAAD7klEQVR42rSYa0hVQRDH71VL7WGKZEqZvehdKuWHjJKEyvRDD8jE/NKHNIwKhZIo7UUQ9KUXZBQpWJQVUYRKUEYvJNRIyopS7GlqppRy0Uxv/4XZmE5zzj1XcuDH3cfM7pw9O3tmr9PtdjsGIbkgEfiCAWpzUv0lyAfdXo+qnPGS3W7PUjWIcR1OGysTBtpYvZXaPhB+1N4PRoFoqseCZ1QOAS7QO9iVmQzugx5Qztqb6elzBJvxbHXGUdsR0EV2KVYrY+VIl2Hpa0EC+ET1PYLdNKa/AhwUXmGaN86oAT8y44sm+yJOsA0EXwTdS+A1q6+140wk+MqMdlB7nmHwvRbLvRx8Njii2qfQK9eSYuXMWPCDKecKry4VzLQRGf5gJYgxtMeDfjbHYjNnbpOC8n7bYELTJrHgPc31i230v5zRHjcMoSOas2x1EiRnzjCF0zYHDQBzQTQIs2mTDgZoniYQZLaBK5lissWAajOeAm3sAdTrLQPLLOwimH4jd0Ryxhd8J+V9JgNmMofN5LKJbTLTWSNFkzqEHoE3hJZVwmAZrF85dBxsAZvAAVDP+q8K9uG0ad0U/mq+F+CwdkaSc8JAY1i/etfzTJ7+CtPLEPrVgdcrzLlTO9MNDtHhlmgySRHpqoEmedikVaSrXrmP0D8BZIFsUEe617QzzTYOMRfpHrMRMUvZE8/yoFtMesU+9PFWaUCAxcc9HARSucZGmtSgEgIqz/GgG6QTCB+bOdhwVu6zof+TlUfbTfS0M+opeiz0Og3JlicJpTTUQQmYlfQZnVG/wSxrM0o7aKRypg1n0ln5qYmOypeHAf8/q882WjtoAXfAEmGjrWe6Ry02ZBLTKxP6Q8AFCpoWFuYlqvOxEPPqQIsSBuK6RZQS6NCdTmmHW0g9NUr3gTCfyqHitNJGsItiXydAeYIzI9m54GYnaZMwgXSCL2L958l5ddaESt+mBWzZcixeRaHFd+khmG1iF8P0Cq2uKupSdpfK38B80GyxSReCBBBBG1HZ1IGbHjZ3KUil8kmwXbqq6CT8LR3XQ5lcXWcrFK/b+aE3gl3GOh1DKy5WDpBWJo152yFEwv+i0hD6PmbJVQFTVLnGRHYzKAHVoBTMsJgsiD6mT8AtQ8ZYYdjoHi9x+5lBPYVoqyFi1IEVbOLMDSHCVoMTrF7tzfU23yRsy9ndKluwi2S698ArYYwab+/aDuGerJf7HdU3m9wWtOhMsIO1qRPcaTann8WOLwC1YCr9tVFJ7TqvWUe5CP9LJILZqzzmOf1uoK9zIctz/hE7/88YpQIk2dCLspE+iPmMN7KVVspFSVQP0Ut1dWpneeuIkt8CDABuMLOGB5KdBgAAAABJRU5ErkJggg==);
         background-size: 100%;
         background-repeat: no-repeat;
         background-position: right;
         margin: 0 0.2rem;
-        height: 0.5rem;
-        width: .5rem;
     }
 
     .huiyuan {

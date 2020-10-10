@@ -4,7 +4,7 @@
         <div class='main'>
             <ul class='head'>
                 <li>头像</li>
-                <li><img :src="$store.state.user.head?$store.state.user.head:require('../../../assets/images/common/renxiang.png')" alt=""/><input ref="headfile" type="file" @change="uploadHead" /></li>
+                <li><img src='../../../assets/images/common/renxiang.png' alt=""/><input ref="headfile" type="file" @change="uploadHead" /></li>
             </ul>
             <ul class='list' @click="goPage('/user/change_name')">
                 <li>昵称</li>
@@ -143,15 +143,10 @@
             //上传头像
             uploadHead(e){
                 if(e.target.files[0]){
-                    this.asyncUploadHead({
-                        portrait:e.target.files[0],
-                        userID: this.$store.state.user.uid,
-                        success:(res)=>{
-                            console.log(res)
-                            if(res.status===0){
-                                this.showHead="http://vueshop.glbuys.com/userfiles/head/"+res.data.portrait;
-                                this.head=res.data.portrait;
-                                this.$store.commit('user/SET_HEAD', res.data.portrait)
+                    this.asyncUploadHead({headfile:e.target.files[0],success:(res)=>{
+                            if(res.code===200){
+                                this.showHead="http://vueshop.glbuys.com/userfiles/head/"+res.data.msbox;
+                                this.head=res.data.msbox;
                             }
                         }})
                 }

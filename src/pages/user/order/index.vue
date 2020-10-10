@@ -50,8 +50,7 @@
                         document.title = this.headerTitle;
                         break;
                     case "3":
-                        // this.headerTitle = "待评价";
-                        this.headerTitle = "已完成";
+                        this.headerTitle = "待评价";
                         document.title = this.headerTitle;
                         break;
                     case "4":

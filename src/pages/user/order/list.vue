@@ -54,10 +54,9 @@
                     <div class='status-btn' v-if="item2.orderState===4">已申请售后</div>
                     <div @click.stop="sureOrder(index2,item2)"
                          class='status-btn'
-                         v-if="item2.orderState!==11 && item2.orderState !== 1">
+                         v-if="item2.orderState!==11">
                         付款
                     </div>
-                    <div class='status-btn' v-if="item2.orderState===1">已付款</div>
                 </div>
             </div>
         </div>
@@ -248,13 +247,13 @@
             <div class='total-wrap'>
                 <div class='total'></div>
                 <div class="status-wrap">
-                    <div @click.stop="shegqqingshouhuo(item1)" class='status-btn'>申请售后</div>
-<!--                    <div @click.stop="subgotoreview(item1,index1)" class='status-btn' v-show="item1.orderFrom==0">-->
-<!--                        去评价-->
-<!--                    </div>-->
-<!--                    <div class='status-btn' v-show="item1.orderFrom==1">-->
-<!--                        已评价-->
-<!--                    </div>-->
+                    <div @click.stop="shegqqingshouhuo(item1)" class='status-btn' v-if="item1.orderFrom===0">申请售后</div>
+                    <div @click.stop="subgotoreview(item1,index1)" class='status-btn' v-show="item1.orderFrom==0">
+                        去评价
+                    </div>
+                    <div class='status-btn' v-show="item1.orderFrom==1">
+                        已评价
+                    </div>
                 </div>
             </div>
         </div>

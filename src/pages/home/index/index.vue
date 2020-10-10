@@ -31,22 +31,22 @@
             <!-- 导航 -->
             <div class="quick-nav">
                 <ul
-                        @click="$router.push('/itemshop?levelTwoCategoryID=2&name=办公桌&isSpecialGoods=1&categoryName=成人系列&index=1')"
+                        @click="$router.push('/itemshop?levelTwoCategoryID=1&name=床垫&isSpecialGoods=1&categoryName=成人系列&index=1')"
                         class="item"
                 >
                     <li>
-                        <img src="../../../assets/images/home/index/zhuozi@3x.png"/>
+                        <img src="../../../assets/images/home/index/chuangdian.png"/>
                     </li>
-                    <li>办公桌</li>
+                    <li>床垫</li>
                 </ul>
                 <ul
-                        @click="$router.push('/itemshop?levelTwoCategoryID=1&name=沙发&isSpecialGoods=4&categoryName=简约系列&index=1')"
+                        @click="$router.push('/itemshop?levelTwoCategoryID=2&name=软床&isSpecialGoods=4&categoryName=简约系列&index=1')"
                         class="item"
                 >
                     <li>
-                        <img src="../../../assets/images/home/index/shafa@3x.png"/>
+                        <img src="../../../assets/images/home/index/ruanchuang.png"/>
                     </li>
-                    <li>沙发</li>
+                    <li>软床</li>
                 </ul>
                 <!-- yye $router.push('/membercenter') -->
                 <ul @click="showVIP" class="item">
