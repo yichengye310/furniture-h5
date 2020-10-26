@@ -3,16 +3,16 @@ import {request} from '../../assets/js/utils/request';
 
 //收货地址列表
 export function getAddresData(uid){
-	return request(config.baseApi+"/address/query?userID="+uid);
+	return request(config.baseApi+"address/query?userID="+uid);
 }
 //查询省份
 export function getAllProvince(){
-    return request(config.baseApi+"/address/getAllProvince");
+    return request(config.baseApi+"address/getAllProvince");
 }
 //查询市级
 export function getCityByProvinceID(provinceID){
 	//console.log(provinceID.provinceID)
-    return request(config.baseApi+"/address/getCityByProvinceID?provinceID="+provinceID.provinceID);
+    return request(config.baseApi+"address/getCityByProvinceID?provinceID="+provinceID.provinceID);
 }
 //查询县级
 // export function getDistrictsByCityID(cityID){
