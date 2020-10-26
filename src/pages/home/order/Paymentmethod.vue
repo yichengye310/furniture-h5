@@ -10,18 +10,18 @@
             </div>
 
             <div class="choose">选择支付方式</div>
-            <!--        <div class="payment-weixin pay" @click="Alipaypayment()">
+            <div @click="Alipaypayment()" class="payment-weixin pay">
                 <div class="radio">
-                    <div class="radio-n" :class="{active:isactive===1}"></div>
+                    <div :class="{active:isactive===1}" class="radio-n"></div>
                 </div>
 
                 <div class="pay-w pay1">
-                  <div class="pay-icon">
-                    <img src="../../../assets/images/user/orders/zhifubao.png" alt="">
-                  </div>
-                  <div>支付宝支付</div>
+                    <div class="pay-icon">
+                        <img alt="" src="../../../assets/images/user/orders/zhifubao.png">
+                    </div>
+                    <div>支付宝支付</div>
                 </div>
-            </div>-->
+            </div>
             {{opya}}
             <div @click="WeChatpayment()" class="payment-zhifubao pay">
                 <div class="radio">
@@ -71,7 +71,8 @@
                 ordertheid: [],
                 roomName: localStorage.getItem("roomName"),
                 userName: localStorage.getItem("phoneNumber"),
-                userType: localStorage.getItem("userType2")
+                userType: localStorage.getItem("userType2"),
+                channels: ""
             };
         },
         computed: {
@@ -103,10 +104,20 @@
         },
         beforeCreate() {
             document.addEventListener("plusready", function () {
+                this.plusReady();
             }, false);
         },
 
         methods: {
+            plusReady() {
+                // 获取支付通道
+                plus.payment.getChannels(function (channels) {
+                    this.channels = channels;
+                    console.log(JSON.stringify(channels));
+                }, function (e) {
+                    alert("获取支付通道失败：" + e.message);
+                });
+            },
             gouwuchetijiao() {
                 let bodygoumai = [];
                 let v = [];
@@ -165,13 +176,15 @@
                 this.istabfixed = -position.y > this.tabberoffsettop;
             },
             sub() {
+                let WXPAY_SERVER = this.$config.baseApi + "/wxPay/pay";
+                let ALIPAY_SERVER = this.$config.baseApi + "/zfbPay/toPayApp";
                 let bodyall = {};
                 if (this.$route.query.cartdata === "1") {
                     let body = {
                         productList: this.bodygoumai,
                         userID: localStorage["uid"],
                         userRemark: sessionStorage["value"],
-                        favourMode: this.couponAmount > 0? 1: 0,
+                        favourMode: this.couponAmount > 0 ? 1 : 0,
                         favourAmount: (this.couponAmount || 0) * 100,
                         favourRelatedCouponID: 0,
                         transportationExpense: 0,
@@ -186,7 +199,7 @@
                         productList: this.dandugoumai,
                         userID: localStorage["uid"],
                         userRemark: sessionStorage["value"],
-                        favourMode: this.couponAmount > 0? 1: 0,
+                        favourMode: this.couponAmount > 0 ? 1 : 0,
                         favourAmount: (this.couponAmount || 0) * 100,
                         favourRelatedCouponID: 0,
                         transportationExpense: 0,
@@ -208,18 +221,21 @@
 
                     axios({
                         method: "post",
-                        url: this.$config.baseApi + "/wxPay/H5pay",
+                        url: this.isactive === 1? ALIPAY_SERVER: WXPAY_SERVER,
                         headers: {
                             "Content-Type": "application/json;"
                         },
                         data: JSON.stringify(orderIDList)
                     }).then(res => {
-                        plus.webview.create(res.data.data.mweb_url,
-                            "微信支付", {
-                                additionalHttpHeaders: {Referer: "http://www.ammsshop.com"}
+                        let channel = "";
+                        if (channel)
+                        plus.payment.request(channel,res.data,function(result){
+                            plus.nativeUI.alert("支付成功！",function(){
+
                             });
-                        console.log(JSON.stringify(res));
-                        this.$router.replace("/order/end?out_trade_no=" + res.data.data.out_trade_no + "&orderID=" + this.$route.query.orderID);
+                        },function(error){
+                            plus.nativeUI.alert("支付失败：" + error.code);
+                        });
                     });
                 } else {
                     axios({
@@ -241,7 +257,7 @@
                                 spbillCreateIp: returnCitySN["cip"],
                                 type: 1,
                                 userID: localStorage["uid"],
-                                totalAmount:res.data.data.totalAmount
+                                totalAmount: res.data.data.totalAmount
                             };
                             // console.log(returnCitySN["cip"])
                             Toast("订单提交成功");
@@ -256,8 +272,8 @@
                             }).then(res => {
                                 plus.webview.create(res.data.data.mweb_url,
                                     "微信支付", {
-                                    additionalHttpHeaders: {Referer: "http://www.ammsshop.com"}
-                                });
+                                        additionalHttpHeaders: {Referer: "http://www.ammsshop.com"}
+                                    });
                                 console.log(JSON.stringify(res));
                                 this.$router.replace("/order/end?out_trade_no=" + res.data.data.out_trade_no + "&orderID=" + res.data.data.orderID);
                                 // if (res.err_msg == "get_brand_wcpay_request:ok") {
