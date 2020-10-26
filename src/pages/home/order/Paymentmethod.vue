@@ -274,34 +274,26 @@
                             };
                             // console.log(returnCitySN["cip"])
                             Toast("订单提交成功");
-
+                            
                             axios({
                                 method: "post",
-                                url: this.$config.baseApi + "/wxPay/H5pay",
+                                url: that.isactive === 1? ALIPAY_SERVER: WXPAY_SERVER,
                                 headers: {
                                     "Content-Type": "application/json;"
                                 },
                                 data: JSON.stringify(orderIDList)
                             }).then(res => {
-                                axios({
-                                    method: "post",
-                                    url: that.isactive === 1? ALIPAY_SERVER: WXPAY_SERVER,
-                                    headers: {
-                                        "Content-Type": "application/json;"
-                                    },
-                                    data: JSON.stringify(orderIDList)
-                                }).then(res => {
-                                    console.log(JSON.stringify(res));
-                                    let channel = that.isactive === 1? that.alipayChannel: that.wxpayChannel;
-                                    plus.payment.request(channel,res.data.data,function(result){
-                                        plus.nativeUI.alert("支付成功！",function(){
+                                console.log(JSON.stringify(res));
+                                let channel = that.isactive === 1? that.alipayChannel: that.wxpayChannel;
+                                plus.payment.request(channel,res.data.data,function(result){
+                                    plus.nativeUI.alert("支付成功！",function(){
 
-                                        });
-                                    },function(error){
-                                        plus.nativeUI.alert("支付失败：" + error.code);
                                     });
+                                },function(error){
+                                    plus.nativeUI.alert("支付失败：" + error.code);
                                 });
                             });
+
                         } else {
                             Toast("订单提交失败");
                         }
