@@ -72,7 +72,9 @@
                 roomName: localStorage.getItem("roomName"),
                 userName: localStorage.getItem("phoneNumber"),
                 userType: localStorage.getItem("userType2"),
-                channels: ""
+                channels: "",
+                alipayChannel: "",
+                wxpayChannel: ""
             };
         },
         computed: {
@@ -101,18 +103,29 @@
             }
         },
         mounted() {
-        },
-        beforeCreate() {
-            document.addEventListener("plusready", function () {
-                this.plusReady();
-            }, false);
+            this.$nextTick(() => {
+                if (window.plus) {
+                    this.plusReady();
+                } else {
+                    document.addEventListener("plusready", this.plusReady, false);
+                }
+            })
         },
 
         methods: {
             plusReady() {
                 // 获取支付通道
+                let that = this;
                 plus.payment.getChannels(function (channels) {
-                    this.channels = channels;
+                    that.channels = channels;
+                    for (let i =0; i < channels.length; i++) {
+                        let curr = channels[i];
+                        if (curr['id'] === 'alipay') {
+                            that.alipayChannel = curr;
+                        } else if (curr['id'] === 'wxpay') {
+                            that.wxpayChannel = curr;
+                        }
+                    }
                     console.log(JSON.stringify(channels));
                 }, function (e) {
                     alert("获取支付通道失败：" + e.message);
@@ -218,7 +231,7 @@
                         userID: localStorage["uid"],
                         totalAmount: this.price
                     };
-
+                    let that = this;
                     axios({
                         method: "post",
                         url: this.isactive === 1? ALIPAY_SERVER: WXPAY_SERVER,
@@ -227,9 +240,8 @@
                         },
                         data: JSON.stringify(orderIDList)
                     }).then(res => {
-                        let channel = "";
-                        if (channel)
-                        plus.payment.request(channel,res.data,function(result){
+                        let channel = that.isactive === 1? that.alipayChannel: that.wxpayChannel;
+                        plus.payment.request(channel,res.data.data,function(result){
                             plus.nativeUI.alert("支付成功！",function(){
 
                             });
@@ -238,6 +250,7 @@
                         });
                     });
                 } else {
+                    let that = this;
                     axios({
                         method: "post",
                         url: this.$config.baseApi + "/order/submit",
@@ -270,40 +283,24 @@
                                 },
                                 data: JSON.stringify(orderIDList)
                             }).then(res => {
-                                plus.webview.create(res.data.data.mweb_url,
-                                    "微信支付", {
-                                        additionalHttpHeaders: {Referer: "http://www.ammsshop.com"}
+                                axios({
+                                    method: "post",
+                                    url: that.isactive === 1? ALIPAY_SERVER: WXPAY_SERVER,
+                                    headers: {
+                                        "Content-Type": "application/json;"
+                                    },
+                                    data: JSON.stringify(orderIDList)
+                                }).then(res => {
+                                    console.log(JSON.stringify(res));
+                                    let channel = that.isactive === 1? that.alipayChannel: that.wxpayChannel;
+                                    plus.payment.request(channel,res.data.data,function(result){
+                                        plus.nativeUI.alert("支付成功！",function(){
+
+                                        });
+                                    },function(error){
+                                        plus.nativeUI.alert("支付失败：" + error.code);
                                     });
-                                console.log(JSON.stringify(res));
-                                this.$router.replace("/order/end?out_trade_no=" + res.data.data.out_trade_no + "&orderID=" + res.data.data.orderID);
-                                // if (res.err_msg == "get_brand_wcpay_request:ok") {
-                                //     console.log("pay支付成功");
-                                //     console.log(res);
-                                //     this.opya = res;
-                                //     this.$router.push({
-                                //         path: "/order/end",
-                                //         query: {status: res.err_msg, type: true}
-                                //     });
-                                // } else {
-                                //     console.log("pay支付成功");
-                                //     console.log(res);
-                                //     this.opya = res;
-                                //     this.$router.push({
-                                //         path: "/order/end",
-                                //         query: {status: res.err_msg, type: true}
-                                //     });
-                                //     console.log(res);
-                                //     this.opya = res;
-                                //     console.log("pay支付失败");
-                                //     if (this.$route.query.zhibo) {
-                                //         getMessage(this.roomName, this.userName, "", 2, this.userType);
-                                //         var vm = this;
-                                //         vm.$router.go(-1);
-                                //     } else {
-                                //         var vm = this;
-                                //         vm.$router.go(-1);
-                                //     }
-                                // }
+                                });
                             });
                         } else {
                             Toast("订单提交失败");

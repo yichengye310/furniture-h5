@@ -284,7 +284,7 @@
                     address: this.address123,
                     mobilePhone: this.phoneNumber
                 }
-                console.log(dataress)
+                console.log(dataress);
                 axios({
                     method: "post",
                     url: this.$config.baseApi + "/address/add",
