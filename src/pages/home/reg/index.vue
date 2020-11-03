@@ -4,7 +4,7 @@
 		<div class='main'>
 			<div class='member-img'>
 				<div class="img">
-					<img src="../../../assets/images/common/aimumisi.png" alt="">
+					<img src="../../../assets/images/common/qiaoli.png" alt="">
 				</div>
 			</div>
 			<div class='cellphone-wrap' style="margin-top: 0.8rem;">
@@ -43,7 +43,7 @@
 			<div class='sure-btn' @click="submit()">立即注册</div>
 			<div class='sure-btn2'>
 				<input type="checkbox" id="checkbox" @click="selet($event)">
-				我已阅读并同意 <span @click.stop="$router.push('/useragreement')" style="color: #000000;font-weight: bold;">《缔邦用户协议》</span>
+				我已阅读并同意 <span @click.stop="$router.push('/useragreement')" style="color: #000000;font-weight: bold;">《乔利家具用户协议》</span>
 			</div>
 		</div>
 	</div>

@@ -10,18 +10,18 @@
             </div>
 
             <div class="choose">选择支付方式</div>
-            <div @click="Alipaypayment()" class="payment-weixin pay">
-                <div class="radio">
-                    <div :class="{active:isactive===1}" class="radio-n"></div>
-                </div>
+<!--            <div @click="Alipaypayment()" class="payment-weixin pay">-->
+<!--                <div class="radio">-->
+<!--                    <div :class="{active:isactive===1}" class="radio-n"></div>-->
+<!--                </div>-->
 
-                <div class="pay-w pay1">
-                    <div class="pay-icon">
-                        <img alt="" src="../../../assets/images/user/orders/zhifubao.png">
-                    </div>
-                    <div>支付宝支付</div>
-                </div>
-            </div>
+<!--                <div class="pay-w pay1">-->
+<!--                    <div class="pay-icon">-->
+<!--                        <img alt="" src="../../../assets/images/user/orders/zhifubao.png">-->
+<!--                    </div>-->
+<!--                    <div>支付宝支付</div>-->
+<!--                </div>-->
+<!--            </div>-->
             {{opya}}
             <div @click="WeChatpayment()" class="payment-zhifubao pay">
                 <div class="radio">
@@ -274,7 +274,7 @@
                             };
                             // console.log(returnCitySN["cip"])
                             Toast("订单提交成功");
-                            
+
                             axios({
                                 method: "post",
                                 url: that.isactive === 1? ALIPAY_SERVER: WXPAY_SERVER,

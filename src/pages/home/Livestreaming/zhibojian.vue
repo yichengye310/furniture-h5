@@ -23,7 +23,7 @@
                     >
                         <div class="room-m-icon" ref="roommicon">
                             <div class="room-m-icon1">
-                                <img src="../../../assets/images/common/aimumisi.png" alt/>
+                                <img src="../../../assets/images/common/qiaoli.png" alt/>
                             </div>
                             <div class="room-m-icon2">{{item.filename}}</div>
                         </div>
@@ -218,7 +218,7 @@
         margin-right: 0.135rem;
         height: 4.0655rem;
         margin-top: 0.2585rem;
-        background-image: url("../../../assets/images/common/aimumisi.png");
+        background-image: url("../../../assets/images/common/qiaoli.png");
         background-position: center;
         background-size: 100%;
     }

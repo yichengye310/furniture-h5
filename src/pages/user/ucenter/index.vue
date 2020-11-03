@@ -1,13 +1,13 @@
 <template>
     <div style="height: 100vh;width: 100%;overflow-y: auto;overflow-x:hidden;">
         <div class="user-info-wrap">
-            <div class="right-btn-wrapper" @click="isLogin?goPage('/user/profile'):goPage('/login')">
+            <div @click="isLogin?goPage('/user/profile'):goPage('/login')" class="right-btn-wrapper">
                 <div class="right-btn"></div>
             </div>
 
             <div style="width: 100%;height: auto;padding-top:.7rem;">
                 <div style="width: 100%;height:auto;display: flex;justify-content: center;">
-                    <div class="head" @click="isLogin?goPage('/user/profile'):goPage('/login')">
+                    <div @click="isLogin?goPage('/user/profile'):goPage('/login')" class="head">
                         <img :src="head?head:require('../../../assets/images/common/renxiang.png')" alt/>
                     </div>
                 </div>
@@ -15,49 +15,51 @@
                 <div class="nickname">{{username?username:'昵称'}}</div>
             </div>
             <div class="huiyuan-img">
-                <img src="../../../assets/images/user/my/huiyuan.png" alt/>
+                <img :src="userType == '2'? '../../../assets/images/user/my/huiyuan2.png': '../../../assets/images/user/my/huiyuan1.png'"
+                     @click="$router.push('/vip')"
+                     alt/>
                 <!-- <div class="now" @click="goPage('/membercenter')">立即开通</div> -->
-                <div class="now" @click="$router.push('/vip')">{{userType == '2'? '立即进入': '立即开通'}}</div>
+                <!--                <div class="now" @click="$router.push('/vip')">{{userType == '2'? '立即进入': '立即开通'}}</div>-->
             </div>
         </div>
         <div class="order-name-wrap">
             <div class="order-name">全部订单</div>
             <div
-                    class="show-order"
                     @click="isLogin?goPage('/user/order/list?status=all'):goPage('/login')"
+                    class="show-order"
             >查看全部订单 &gt;
             </div>
         </div>
         <div class="order-status-wrap">
-            <div class="item" @click="isLogin?goPage('/user/order/list?status=0'):goPage('/login')">
+            <div @click="isLogin?goPage('/user/order/list?status=0'):goPage('/login')" class="item">
                 <div class="item-xiaoyuanquan" v-show="ordersPay.length>0">
                     <span>{{ordersPay.length = (ordersPay.length < 100)?ordersPay.length:'...'}}</span>
                 </div>
                 <div class="icon wait1"></div>
                 <div class="text">待付款</div>
             </div>
-            <div class="item" @click="isLogin?goPage('/user/order/list?status=1'):goPage('/login')">
+            <div @click="isLogin?goPage('/user/order/list?status=1'):goPage('/login')" class="item">
                 <div class="item-xiaoyuanquan" v-show="ordersOut.length>0">
                     <span>{{ordersOut.length < 100?ordersOut.length:'...'}}</span>
                 </div>
                 <div class="icon wait2"></div>
                 <div class="text">待发货</div>
             </div>
-            <div class="item" @click="isLogin?goPage('/user/order/list?status=2'):goPage('/login')">
+            <div @click="isLogin?goPage('/user/order/list?status=2'):goPage('/login')" class="item">
                 <div class="item-xiaoyuanquan" v-show="orderFrom.length>0">
                     <span>{{orderFrom.length < 100?orderFrom.length:'...'}}</span>
                 </div>
                 <div class="icon take"></div>
                 <div class="text">待收货</div>
             </div>
-            <div class="item" @click="isLogin?goPage('/user/order/list?status=3'):goPage('/login')">
+            <div @click="isLogin?goPage('/user/order/list?status=3'):goPage('/login')" class="item">
                 <div class="item-xiaoyuanquan" v-show="orderAppraised.length>0">
                     <span>{{orderAppraised.length < 100?orderAppraised.length:'...'}}</span>
                 </div>
                 <div class="icon comment"></div>
                 <div class="text">待评价</div>
             </div>
-            <div class="item" @click="isLogin?goPage('/user/order/list?status=4'):goPage('/login')">
+            <div @click="isLogin?goPage('/user/order/list?status=4'):goPage('/login')" class="item">
                 <div class="item-xiaoyuanquan" v-show="shouhou.length>0">
                     <span>{{shouhou.length < 100?shouhou.length:'...'}}</span>
                 </div>
@@ -96,7 +98,7 @@
 			"
             >
                 <div>Copyright2015-2020</div>
-                <div style="margin-top: 0.2rem;">苏州缔邦家具有限公司版权所有</div>
+                <div style="margin-top: 0.2rem;">苏州乔利家具家具有限公司版权所有</div>
             </div>
         </div>
     </div>
@@ -105,7 +107,7 @@
 <script>
     import Vue from "vue";
 
-    import {mapState, mapActions} from "vuex";
+    import {mapActions, mapState} from "vuex";
     import {Dialog} from "vant";
 
     Vue.use(Dialog);

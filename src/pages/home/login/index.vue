@@ -4,7 +4,7 @@
 		<div class='main login-main'>
 			<div class='member-img'>
 				<div class="img">
-					<img src="../../../assets/images/common/aimumisi.png" alt="">
+					<img src="../../../assets/images/common/qiaoli.png" alt="">
 				</div>
 			</div>
 

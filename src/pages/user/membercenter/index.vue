@@ -36,7 +36,7 @@
         <div class="member-t">
           <div class="m-namenews">
             <div class="m-touxiang">
-              <img src="../../../assets/images/common/aimumisi.png" alt />
+              <img src="../../../assets/images/common/qiaoli.png" alt />
             </div>
             <div class="m-username">nickname</div>
           </div>
@@ -79,7 +79,7 @@
       <div class="m-shopthemain">
         <div class="m-shop">
           <div class="m-img">
-            <img src="../../../assets/images/common/aimumisi.png" alt />
+            <img src="../../../assets/images/common/qiaoli.png" alt />
           </div>
           <div class="m-shopname">陶瓷陶瓷曹禺陶瓷陶瓷掏出</div>
           <div class="m-shopprice">
@@ -89,7 +89,7 @@
 
         <div class="m-shop">
           <div class="m-img">
-            <img src="../../../assets/images/common/aimumisi.png" alt />
+            <img src="../../../assets/images/common/qiaoli.png" alt />
           </div>
           <div class="m-shopname">陶瓷陶瓷曹禺陶瓷陶瓷掏出</div>
           <div class="m-shopprice">
@@ -99,7 +99,7 @@
 
         <div class="m-shop">
           <div class="m-img">
-            <img src="../../../assets/images/common/aimumisi.png" alt />
+            <img src="../../../assets/images/common/qiaoli.png" alt />
           </div>
           <div class="m-shopname">陶瓷陶瓷曹禺陶瓷陶瓷掏出</div>
           <div class="m-shopprice">

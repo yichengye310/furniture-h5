@@ -18,7 +18,7 @@
           >
             <div class="room-m-icon">
               <div class="room-m-icon1">
-                <img src="../../../assets/images/common/aimumisi.png" alt />
+                <img src="../../../assets/images/common/qiaoli.png" alt />
               </div>
               <div class="room-m-icon2">{{item.liveTitle}}</div>
             </div>

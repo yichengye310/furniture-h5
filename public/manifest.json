@@ -1,6 +1,6 @@
 {
     "@platforms" : [ "android", "iPhone", "iPad" ],
-    "id" : "H5200AA41", /*应用的标识*/
+    "id" : "H516585AF", /*应用的标识*/
     "name" : "乔利床垫", /*应用名称，程序桌面图标名称*/
     "version" : {
         "name" : "1.0", /*应用版本名称*/
@@ -47,9 +47,6 @@
         "Gallery" : {
             "description" : "访问系统相册"
         },
-        "Geolocation" : {
-            "description" : "访问位置信息"
-        },
         "Invocation" : {
             "description" : "使用Native.js能力"
         },
@@ -76,12 +73,6 @@
         },
         "Barcode" : {
             "description" : "管理二维码扫描插件"
-        },
-        "Maps" : {
-            "description" : "管理地图插件"
-        },
-        "Speech" : {
-            "description" : "管理语音识别插件"
         },
         "Webview" : {
             "description" : "窗口管理"
@@ -224,7 +215,7 @@
                     },
                     "weixin" : {
                         "__platform__" : [ "ios", "android" ],
-                        "appid" : "",
+                        "appid" : "wx8fa31de5c7e4d28f",
                         "UniversalLinks" : ""
                     }
                 }

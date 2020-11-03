@@ -33,7 +33,7 @@
         <div class="title">
             <div class="left">
                 <div class="logo">
-                    <img alt src="../../../assets/images/common/aimumisi.png"/>
+                    <img alt src="../../../assets/images/common/qiaoli.png"/>
                 </div>
                 <div class="des">
                     <div class="name">{{number}}人观看中</div>
@@ -49,7 +49,7 @@
         <!-- <div class="barrage-item" > -->
         <!-- <div class="item" v-if="msg.userType==2" style="color:#F1CE03;" ref="huiyuan">
           <div>
-            <img src="../../../assets/images/live/huiyuan.png" alt />会员
+            <img src="../../../assets/images/live/huiyuan1.png" alt />会员
           </div>
           {{msg.msg}}
         </div>

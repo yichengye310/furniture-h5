@@ -19,7 +19,7 @@
         <div class="title">
             <div class="left">
                 <div class="logo">
-                    <img src="../../../assets/images/common/aimumisi.png" alt/>
+                    <img src="../../../assets/images/common/qiaoli.png" alt/>
                 </div>
                 <div class="des">
                     <div class="name">{{title}}</div>
