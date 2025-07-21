@@ -35,7 +35,7 @@
     "eslint": "^6.6.0",
     "eslint-plugin-vue": "^6.0.1",
     "mockjs": "^1.1.0",
-    "node-sass": "^7.0.0",
+    "node-sass": "^9.0.0",
     "scp2": "^0.5.0",
     "vue-template-compiler": "^2.6.10"
   },
