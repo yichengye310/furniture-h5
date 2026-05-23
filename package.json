@@ -14,7 +14,7 @@
     "core-js": "^3.3.2",
     "html2canvas": "^1.0.0-rc.5",
     "jquery": "^3.5.0",
-    "qs": "^6.14.2",
+    "qs": "^6.15.2",
     "url-search-params-polyfill": "^7.0.0",
     "vant": "^2.8.2",
     "vue": "^2.6.10",
